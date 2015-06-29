@@ -1,0 +1,116 @@
+﻿@model List<QLBH_MVC.Models.CartItemModel>
+
+@section title{
+    Giỏ hàng
+}
+
+@section css{    
+<link href="~/Resources/bootstrap-touchspin/jquery.bootstrap-touchspin.min.css" rel="stylesheet" />
+<link href="~/Resources/sweetalert-master/lib/sweet-alert.css" rel="stylesheet" />
+}
+
+@section js{
+<script src="~/Resources/bootstrap-touchspin/jquery.bootstrap-touchspin.min.js"></script>
+<script src="~/Resources/sweetalert-master/lib/sweet-alert.min.js"></script>
+
+    <script>
+        $("input[id*='Quantity']").TouchSpin({
+            min: 1,
+            verticalbuttons: true
+        });
+
+        $('a[data-del-proid]').click(function () {
+            var id = $(this).attr("data-del-proid");
+            $("input[name='proId']").val(id);
+            $('#frmRemoveItem').submit();
+        });
+
+        $('a[data-update-proid]').click(function () {
+            var id = $(this).attr("data-update-proid");
+            $("#txtUpdateId").val(id);
+
+            var quantity = $('#txtQuantity_' + id).val();
+            $("#txtUpdateQ").val(quantity);
+            $("#frmUpdateItem").submit();
+        });
+
+        @if (Session["Error"] != null)
+        {
+            <text>swal("Xin lỗi !","Kho không đủ số lượng", "error")</text>
+            
+            Session["Error"] = null;
+        }
+    </script>
+}
+
+@if (Model.Count == 0)
+{
+    <text> Không có dữ liệu.</text>
+}
+else{
+    <form method="post" id="frmRemoveItem" action="@Url.Action("RemoveItem", "Cart")">
+        <input id="txtRemoveId" type="hidden" name="proId" />
+    </form>
+    
+    <form method="post" id="frmUpdateItem" action="@Url.Action("UpdateItem", "Cart")">
+        <input id="txtUpdateId" type="hidden" name="proId" />
+        <input id="txtUpdateQ" type="hidden" name="quantity" />
+    </form>
+    
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th class="col-sm-4">Sản phẩm</th>ch
+                        <th class="col-sm-2">Giá</th>
+                        <th class="col-sm-2">Số lượng</th>
+                        <th class="col-sm-2">Thành tiền</th>
+                        <th class="col-sm-2">&nbsp;</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var cim in Model)
+                    {
+                        <tr>
+                            <td>@cim.Product.ProName</td>
+                            <td>@string.Format("{0:N0}",cim.Product.Price)</td>
+                            <td><input id="txtQuantity_@cim.Item.ProID" type="text" value="@cim.Item.Quantity" /></td>
+                            <td>@string.Format("{0:N0}",cim.Product.Price*cim.Item.Quantity)</td>
+                            <td>
+                                <a class="btn btn-danger btn-xs" href="#" role="button" title="Xóa" data-del-proid="@cim.Item.ProID">
+                                    <i class="fa fa-remove"></i> 
+                                </a>
+                                <a class="btn btn-primary btn-xs" href="#" role="button" title="Cập nhật" data-update-proid="@cim.Item.ProID">
+                                    <i class="fa fa-check"></i>
+                                </a>  
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td><h4>Total:</h4></td>
+                        <td class="text-danger" colspan="2"><h4>@string.Format("{0:N0}",ViewBag.Total)</h4></td>
+                    </tr>
+                </tfoot>
+            </table> 
+        </div>
+    </div>
+    
+    <form method="post" id="frmCheckout" action="@Url.Action("Checkout","Cart")">
+        <input id="txtTotal" type="hidden" name="total" value="@ViewBag.Total" />
+        <div class="row">
+            <div class="col-md-12">
+                <a class="btn btn-success" href="@Url.Action("Index","Home")" role="button">
+                    <i class="fa fa-reply"></i> Về trang chủ
+                </a>
+                <button type="submit" class="btn btn-danger">
+                    <i class="fa fa-check"></i> Thanh toán
+                </button>
+            </div>
+        </div>
+    </form>
+}

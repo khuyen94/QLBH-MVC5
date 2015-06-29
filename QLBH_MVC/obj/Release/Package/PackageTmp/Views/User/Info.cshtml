@@ -1,0 +1,28 @@
+﻿@using QLBH_MVC.Models
+@model User
+@{
+    ViewBag.Title = "Info";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+@section title{
+    Thông tin khách hàng
+}
+
+<table class="table table-hover">
+    <tr>
+        <td>
+            Họ tên:
+        </td>
+        <td>@Model.f_Name</td>
+    </tr>
+    <tr>
+        <td>Email:</td>
+        <td>@Model.f_Email</td>
+    </tr>
+    <tr>
+        <td>Ngày sinh:</td>
+        <td>@Model.f_DOB</td>
+    </tr>
+</table>
+

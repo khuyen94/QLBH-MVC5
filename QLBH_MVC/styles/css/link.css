@@ -1,0 +1,54 @@
+﻿A.nav, A:visited.nav, A:active.nav, A:link.nav {
+    display: block;
+    color: #fff;
+    text-decoration: none;
+    padding: 0 25px 0 25px;
+}
+
+A:hover.nav {
+    background-color: #094ab2;
+}
+
+A.cmd, A:visited.cmd, A:active.cmd, A:link.cmd {
+    color: #fff;
+    text-decoration: none;
+}
+
+A:hover.cmd {
+    text-decoration: underline;
+}
+
+
+A.Detail, A:visited.Detail, A:active.Detail, A:link.Detail {
+    color: #fff;
+    background-color: #094ab2;
+    text-decoration: none;
+    display: inline-block;
+    width: 70px;
+    height: 25px;
+    line-height: 25px;
+    text-align: center;
+    margin-top: 10px;
+    font-family: Verdana;
+    font-size: 9pt;
+    font-weight: bold;
+}
+
+A:hover.Detail {
+    background-color: #42a644;
+}
+
+A.blueLink, A:visited.blueLink, A:active.blueLink, A:link.blueLink {
+    color: #fff;
+    background-color: #094ab2;
+    font-family: 'Open Sans';
+    font-size: 10pt;
+    font-weight: bold;
+    padding: 6px 20px 6px 20px;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+A:hover.blueLink {
+    background-color: #42a644;
+}

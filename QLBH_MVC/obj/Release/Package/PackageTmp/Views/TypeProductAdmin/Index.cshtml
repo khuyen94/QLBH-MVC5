@@ -1,0 +1,130 @@
+﻿@using QLBH_MVC.Models
+@model List<TypeProduct>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+
+@section title {
+    Quản lý Loại
+}
+
+@section css{
+    <link href="~/Resources/sweetalert-master/lib/sweet-alert.css" rel="stylesheet" />
+}
+
+@section js{
+    <script src="~/Resources/sweetalert-master/lib/sweet-alert.min.js"></script>
+
+    <script>
+        $('#btnShow').click(function () {
+            $("#frmAddType").removeClass("hidden");
+            $('#typeName').focus();
+        });
+
+        $('#btnCloseFrmAdd').click(function () {
+            $("#frmAddType").addClass("hidden");
+        });
+
+        $('a[data-del-typeid]').click(function () {
+            var id = $(this).attr("data-del-typeid");
+            $.ajax({
+                type: 'POST',
+                url: '/TypeProductAdmin/delType',
+                contentType: 'application/json; charset=utf-8',
+                data: '{id: ' + id + '}',
+                dataType: 'json',
+                success: function (status) {
+                    if (status == true) {
+                        swal("Thông báo!", "Đã xóa thành công!", "success");
+                    }
+                    else {
+                        swal("Lỗi!", "Không xóa được!", "error");
+                    }
+                    location.reload();
+                },
+                error: function (xhr, status) {
+                    alert(status);
+                }
+            })
+        });
+
+        $('a[data-update-typeid]').click(function () {
+            var id = $(this).attr("data-update-typeid");
+            var name = $('#txtTypeName_' + id + '').val();
+            var data = {"id": id, "name": name}
+            $.ajax({
+                type: 'POST',
+                url: '/TypeProductAdmin/updateType',
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify(data),
+                dataType: 'json',
+                success: function (status) {
+                    if (status == true) {
+                        swal("Thông báo!", "Đã sửa thành công!", "success");
+                    }
+                    else {
+                        swal("Lỗi!", "Không sửa được!", "error");
+                    }
+                    location.reload();
+                },
+                error: function (xhr, status) {
+                    alert(status);
+                }
+            })
+        });
+    </script>
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <button id="btnShow" type="button" class="btn btn-default">
+            <i class="fa fa-plus"></i>&nbsp;Thêm
+        </button>
+    </div>
+    <br />
+    <br />
+    <form method="post" action="@Url.Action("addType","TypeProductAdmin")" id="frmAddType" class="navbar-form hidden">
+        <label for="typeName"> Loại</label>
+        <div class="form-group">
+            <input type="text" class="form-control" id="typeName" name="typeName" placeholder="Nhập tên..">
+        </div>
+        <button type="submit" class="btn btn-success">Thêm</button>
+        <button id="btnCloseFrmAdd" type="button" class="btn btn-danger">Đóng</button>
+    </form>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <table id="tblCat" class="table table-hover" style="width: 600px !important">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Loại</th>
+                    <th>&nbsp;</th>
+                    <th>&nbsp;</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (TypeProduct t in Model)
+                {
+                    <tr>
+                        <td>@t.TypeID</td>
+                        <td><input type="text" id="txtTypeName_@t.TypeID" value="@t.TypeName" /></td>
+                        <td>
+                            <a class="btn btn-default btn-xs" data-del-typeid="@t.TypeID">
+                                <i class="fa fa-remove"></i>
+                            </a>
+                        </td>
+                        <td>
+                            <a class="btn btn-default btn-xs" data-update-typeid="@t.TypeID">
+                                <i class="fa fa-pencil"></i>
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

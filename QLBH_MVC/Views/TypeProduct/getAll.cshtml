@@ -1,0 +1,8 @@
+﻿@using QLBH_MVC.Models
+@model List<TypeProduct>
+@foreach (TypeProduct t in Model)
+{
+    <li>
+        <a href="@Url.Action("byType", "Product", new { id = @t.TypeID })"><i class="icons icon-right-dir"></i> @t.TypeName </a>
+    </li>
+}

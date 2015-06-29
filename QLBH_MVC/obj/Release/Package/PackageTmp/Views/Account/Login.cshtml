@@ -1,0 +1,66 @@
+﻿@model QLBH_MVC.Models.LoginModel
+
+
+@section title {
+    Đăng nhập
+}
+
+@section js {
+<script src="~/Resources/jquery-validation/jquery.validate.min.js"></script>
+
+    <script>
+        $(function () {
+            $('#loginForm').validate({
+                rules: {
+                    UID: "required",
+                    PWD: "required",
+                },
+
+                messages: {
+                    UID: "Chưa nhập tên đăng nhập.",
+                    PWD: "Chưa nhập mật khẩu."
+                },
+            });
+
+            $('txtUID').focus();
+        })
+    </script>
+}
+
+<form class="horizontal" action="" method="post" id="loginForm">
+    <div class="row">        
+            <h4>Thông tin đăng nhập</h4> <hr />
+    </div>
+
+    <div class="row">
+        <div class="col-md-5 col-md-offset-1">
+            <div class="form-group">
+                <div class="col-sm-12">
+                    <span style="color: red; font-weight: bold">@ViewBag.Error</span>
+                    <input type="hidden" name="©" value="@ViewBag.RetUrl" />
+                    <label style="font-weight: bold " for="txtUID">Username</label>
+                    <input type="text" class="form-control" id="txtUID" name="UID" />
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-12">
+                    <label style="font-weight: bold " for="txtPWD">Password</label>
+                    <input type="password" class="form-control" id="txtPWD" name="PWD" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-7">
+                    <label style="font-weight: normal">
+                        @Html.CheckBoxFor(m=>m.RememberMe) Ghi nhớ
+                    </label>
+                </div>
+                <div class="col-sm-5">
+                    <button type="submit" class="btn btn-primary pull-right">
+                        <i class="fa fa-check"></i> Đăng nhập 
+                    </button> 
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

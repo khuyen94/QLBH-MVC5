@@ -1,0 +1,56 @@
+﻿@using QLBH_MVC.Models
+@using QLBH.Helpers
+@model List<Product>
+
+@section title {
+   @ViewBag.TypeName
+}
+
+@if (Model.Count == 0)
+{
+    <text> Không có sản phẩm.</text>
+}
+else
+{
+    <div class="row">
+        @foreach (Product p in Model)
+        {
+            <!-- Product Item -->
+            <div class="col-lg-4 col-md-4 col-sm-4">
+                <img src="~/Imgs/sp/@p.ProID/main_thumbs.jpg" alt="@p.ProName" title="@p.ProName">
+                <a href="@Url.Action("detail", "product", new {id = p.ProID })">
+                </a>
+                <h5><a href="@Url.Action("Detail", "Product", new { id = p.ProID })">@p.ProName</a></h5>
+                <span class="price">$@string.Format("{0:N0}", p.Price)</span><br /><br />
+                <span style="display: inline-block; height: 60px;">@p.TinyDes</span>
+                @if (CurrentContext.IsLogged())
+                {
+                    <a class="btn btn-success" data-proid="@p.ProID"><i class="fa fa-shopping-cart"></i> </a>
+                    <br />
+                }
+            </div>
+
+                        <!-- Product Item -->
+        }
+    </div>
+    <nav>
+        <ul class="pagination">
+            <li class="@(ViewBag.CurPage == 1 ? "hidden":"")">
+                <a href="@Url.Action("byType", "Product", new {id = ViewBag.TypeId, page = ViewBag.CurPage-1 })" aria-label="<<">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            @for (int i = 1; i <= ViewBag.PageCount; i++)
+            {
+                <li class="@(ViewBag.CurPage == i ? "active": "")">
+                    <a href="@Url.Action("byType", "Product", new {id = ViewBag.TypeId, page = i })">@i</a>
+                </li>
+            }
+            <li class ="@(ViewBag.PageCount - ViewBag.CurPage < 1 ? "hidden":"")">
+                <a href="@Url.Action("byType", "Product", new {id = ViewBag.TypeId, page = ViewBag.CurPage + 1 })" aria-label=">>">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+}

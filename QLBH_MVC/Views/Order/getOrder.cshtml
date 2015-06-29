@@ -1,0 +1,25 @@
+﻿
+<form method="post" action="@Url.Action("updateOrder", "Order")" id="frmUpdateOrder" class="navbar-form hidden">
+    <div class="form-group">
+        <label for="txtCusUser" class="col-sm-2 control-label">Tên khách hàng</label>
+        <div class="col-sm-4">
+            <input id="txtOrderID" type="hidden" name="OrderID" />
+            <input type="text" id="txtCusUser" readonly />
+        </div>
+        <label for="txtOrderDate" class="col-sm-2 control-label">Ngày đặt hàng:</label>
+        <div class="col-sm-4">
+            <input type="text" id="txtOrderDate" readonly />
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label">Tình Trạng:</label>
+        <div class="col-sm-4">
+            <select id="cboStatus" class="form-control">
+                <option value="0">Chưa giao</option>
+                <option value="1">Đã giao</option>
+            </select>
+        </div>
+    </div>
+    <button type="submit" class="btn btn-success">Thêm</button>
+    <button id="btnCloseFrmAdd" type="button" class="btn btn-danger">Đóng</button>
+</form>

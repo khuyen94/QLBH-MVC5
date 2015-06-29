@@ -1,0 +1,108 @@
+﻿
+@{
+    ViewBag.Title = "admin_Dashboard";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+@section title{
+    Dashboard
+}
+
+<div class="row">
+    <div class="col-lg-3 col-md-6">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <i class="fa fa-comments fa-5x"></i>
+                    </div>
+                    <div class="col-xs-9 text-right">
+                        <div class="huge">
+                            <label>@ViewBag.CountCat</label>
+                        </div>
+                        <div>Quản lí danh mục!</div>
+                    </div>
+                </div>
+            </div>
+            <a href="@Url.Action("getAll","CategoryAdmin")">
+                <div class="panel-footer">
+                    <span class="pull-left">Xem chi tiết</span>
+                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                    <div class="clearfix"></div>
+                </div>
+            </a>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+        <div class="panel panel-green">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <i class="fa fa-tasks fa-5x"></i>
+                    </div>
+                    <div class="col-xs-9 text-right">
+                        <div class="huge">
+                            <label>@ViewBag.CountPro</label>
+                        </div>
+                        <div>Quản lí sản phẩm!</div>
+                    </div>
+                </div>
+            </div>
+            <a href="@Url.Action("getAll", "ProductAdmin", new { page = 1 })">
+                <div class="panel-footer">
+                    <span class="pull-left">Xem chi tiêt</span>
+                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                    <div class="clearfix"></div>
+                </div>
+            </a>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+        <div class="panel panel-yellow">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <i class="fa fa-shopping-cart fa-5x"></i>
+                    </div>
+                    <div class="col-xs-9 text-right">
+                        <div class="huge">
+                            <label>@ViewBag.CountOrder</label>
+                        </div>
+                        <div>Quản lí Orders!</div>
+                    </div>
+                </div>
+            </div>
+            <a href="@Url.Action("Index", "Order")">
+                <div class="panel-footer">
+                    <span class="pull-left">Xem chi tiết</span>
+                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                    <div class="clearfix"></div>
+                </div>
+            </a>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-6">
+        <div class="panel panel-red">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-xs-3">
+                        <i class="fa fa-support fa-5x"></i>
+                    </div>
+                    <div class="col-xs-9 text-right">
+                        <div class="huge">
+                            <label>@ViewBag.CountType</label>
+                        </div>
+                        <div>Loại sản phẩm!</div>
+                    </div>
+                </div>
+            </div>
+            <a href="@Url.Action("Index","TypeProductAdmin")">
+                <div class="panel-footer">
+                    <span class="pull-left">Xem chi tiết</span>
+                    <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+                    <div class="clearfix"></div>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>

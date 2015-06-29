@@ -1,0 +1,119 @@
+﻿@using QLBH_MVC.Models
+@model List<Product>
+
+@{
+    ViewBag.Title = "getAll";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+@section title {
+    Quản lý sản phẩm
+}
+
+@section css{
+    <link href="~/Resources/sweetalert-master/lib/sweet-alert.css" rel="stylesheet" />
+}
+
+@section js{
+<script src="~/Resources/sweetalert-master/lib/sweet-alert.min.js"></script>
+
+    <script>
+        $('a[data-del-proid]').click(function () {
+            var id = $(this).attr("data-del-proid");
+            $.ajax({
+                type: 'POST',
+                url: '/ProductAdmin/delPro',
+                contentType: 'application/json; charset=utf-8',
+                data: '{id: ' + id + '}',
+                dataType: 'json',
+                success: function (status) {
+                    if (status == true) {
+                        swal("Thông báo!", "Đã xóa thành công!", "success");
+                    }
+                    else {
+                        swal("Lỗi!", "Không xóa được!", "error");
+                    }
+                    location.reload();
+                },
+                error: function (xhr, status) {
+                    alert(status);
+                }
+            })
+        });
+    </script>
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <a href="@Url.Action("addProduct","ProductAdmin")" role="button" class="btn btn-default">
+            <i class="fa fa-plus"></i>&nbsp;Thêm
+        </a>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Sản phẩm</th>
+                    <th>Giá</th>
+                    <th>Số lượng</th>
+                    <th>Xuất xứ</th>
+                    <th>Danh mục</th>
+                    <th>Loại sản phẩm</th>
+                    <th>&nbsp;</th>
+                    <th>&nbsp;</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (Product p in Model)
+                {
+                    <tr>
+                        <td>@p.ProID</td>
+                        <td>@p.ProName</td>
+                        <td>@string.Format("{0:N0}", p.Price)</td>
+                        <td>@p.Quantity</td>
+                        <td>@p.Origin</td>
+                        <td>@p.Category.CatName</td>
+                        <td>@p.TypeProduct.TypeName</td>
+                        <td>
+                            <a class="btn btn-default btn-xs" data-del-proid="@p.ProID">
+                                <i class="fa fa-remove"></i>
+                            </a>
+                        </td>
+                        <td>
+                            <a href="@Url.Action("editProduct", "ProductAdmin", new { id = p.ProID })" class="btn btn-default btn-xs">
+                                <i class="fa fa-pencil"></i>
+                            </a>
+
+                        </td>
+
+                    </tr>
+
+                }
+            </tbody>
+        </table>
+    </div>
+    <nav style="text-align: center">
+        <ul class="pagination">
+            <li class="@(ViewBag.CurPage == 1 ? "hidden":"")">
+                <a href="@Url.Action("getAll", "ProductAdmin", new { page = ViewBag.CurPage-1 })" aria-label="<<">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            @for (int i = 1; i <= ViewBag.PageCount; i++)
+            {
+                <li class="@(ViewBag.CurPage == i ? "active": "")">
+                    <a href="@Url.Action("getAll", "ProductAdmin", new { page = i })">@i</a>
+                </li>
+            }
+            <li class="@(ViewBag.PageCount - ViewBag.CurPage < 1 ? "hidden" : "")">
+                <a href="@Url.Action("getAll", "ProductAdmin", new { page = ViewBag.CurPage + 1 })" aria-label=">>">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</div>
+      

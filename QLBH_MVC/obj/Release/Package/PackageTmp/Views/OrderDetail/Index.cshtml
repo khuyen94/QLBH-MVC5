@@ -1,0 +1,45 @@
+﻿@using QLBH_MVC.Models
+@model List<OrderDetail>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+@section title{
+    Chi tiết đơn hàng
+}
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Order ID</th>
+            <th>Tên sản phẩm</th>
+            <th>Số lượng mua</th>
+            <th>Giá tiền</th>
+            <th>Tổng tiền</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (OrderDetail o in Model)
+        {
+            <tr>
+                <td>@o.OrderID</td>
+                <td>@o.Product.ProName</td>
+                <td>@o.Quantity</td>
+                <td>@string.Format("{0:N0}", o.Price)</td>
+                <td>
+                    @string.Format("{0:N0}", o.Amount)
+                </td>
+            </tr>
+        }
+    </tbody>
+    <tfoot>
+        <tr>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td><h4>Total:</h4></td>
+            <td class="text-danger" colspan="2"><h4>@string.Format("{0:N0}", ViewBag.Total)</h4></td>
+            <td><a href="@Url.Action("Index","Order")" class="btn btn-success"><i class="fa fa-reply">Trang hóa đơn</i></a></td>
+        </tr>
+    </tfoot>
+</table>

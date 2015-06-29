@@ -1,0 +1,8 @@
+﻿@using QLBH_MVC.Models
+@model List<Category>
+    @foreach (Category c in Model)
+{
+    <li>
+        <a href="@Url.Action("byCat", "Product", new { id = @c.CatID })"><i class="icons icon-right-dir"></i> @c.CatName </a>
+    </li>
+}

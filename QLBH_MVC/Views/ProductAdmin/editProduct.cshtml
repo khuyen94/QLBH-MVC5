@@ -1,0 +1,171 @@
+﻿@model QLBH_MVC.Models.Product
+@{
+    ViewBag.Title = "editProduct";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+@section title{
+    Chỉnh sửa sản phẩm
+}
+
+@section css{
+    <link href="~/style/bootstrap-select/css/bootstrap-select.min.css" rel="stylesheet" />
+    <link href="~/Resources/bootstrap-touchspin/jquery.bootstrap-touchspin.min.css" rel="stylesheet" />
+    <link href="~/Resources/sweetalert-master/lib/sweet-alert.css" rel="stylesheet" />
+}
+
+@section js{
+    <script src="~/Resources/jquery-validation/jquery.validate.min.js"></script>
+    <script src="~/style/bootstrap-select/js/bootstrap-select.min.js"></script>
+    <script src="~/Resources/bootstrap-touchspin/jquery.bootstrap-touchspin.min.js"></script>
+    <script src="~/Resources/sweetalert-master/lib/sweet-alert.min.js"></script>
+    <script src="~/Resources/bootstrap-file-input.js"></script>
+    <script src="~/Resources/tinymce/tinymce.min.js"></script>
+
+    <script>
+        $("#txtProName").focus();
+
+        $.validator.addMethod("imageOnly", function (value, element) {
+            return this.optional(element) || /^.+\.(jpg|JPG|PNG|png)$/.test(value);
+        });
+
+        $('#editProductForm').validate({
+            rules: {
+                ProName: {
+                    required: true
+                },
+                fuMain: {
+                    imageOnly: true,
+                },
+                fuThumbs: {
+                    imageOnly: true,
+                },
+                Origin: {
+                    required: true
+                }
+            },
+            messages: {
+                ProName: {
+                    required: 'Chưa nhập tên sản phẩm.'
+                },
+                fuMain: {
+                    imageOnly: 'File không đúng định dạng.'
+                },
+                fuThumbs: {
+                    imageOnly: 'File không đúng định dạng.'
+                },
+                Origin: {
+                    required: "Chưa nhập xuất xứ."
+                }
+            }
+        });
+
+        tinymce.init(
+            {
+                selector: 'textarea',
+                menubar: false,
+                toolbar1: "styleselect | bold italic | link",
+                toolbar2: "fontselect | fontsizeselect ",
+                plugins: 'link image textcolor',
+                encoding: 'xml',
+            }
+       );
+
+        $('#txtPrice').TouchSpin({
+            min: 0,
+            max: 999999999,
+            step: 10000,
+            verticalbuttons: true,
+        });
+
+        $('#txtQ').TouchSpin({
+            min: 1,
+            verticalbuttons: true,
+        });
+
+        $('.selectpicker').selectpicker();
+        $('input[type=file]').bootstrapFileInput();
+
+        @if(ViewBag.Added != null && ViewBag.Added)
+        {
+            <text>swal("Thông báo!", "Sửa sản phẩm thành công!", "success") </text>
+        }
+
+    </script>
+
+}
+
+<form class="form-horizontal" method="post" action="" id="editProductForm" enctype="multipart/form-data">
+    <div class="form-group">
+        <label for="txtProName" class="col-sm-2 control-label">Sản phẩm</label>
+        <div class="col-sm-4">
+            <input type="hidden" id="txtProID" name="ProID" value="@Model.ProID" />
+            <input type="text" class="form-control" id="txtProName" name="ProName" value="@Model.ProName" />
+        </div>
+        <label for="CatID" class="col-sm-2 control-label">Danh mục</label>
+        <div class="col-sm-4">
+            <select class="form-control selectpicker" name="CatID">
+                @foreach (var c in ViewBag.Categories)
+                {
+                    <option selected="@Model.CatID == c.CatID ? 'selected':''" value="@c.CatID">@c.CatName</option>
+                }
+            </select>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="txtOrigin" class="col-sm-2 control-label">Xuất xứ</label>
+        <div class="col-sm-4">
+            <input type="text" class="form-control" id="txtOrigin" name="Origin" value="@Model.Origin" />
+        </div>
+        <label for="TypeID" class="col-sm-2 control-label">Loại</label>
+        <div class="col-sm-4">
+            <select class="form-control selectpicker" name="TypeID">
+                @foreach (var c in ViewBag.TypeProduct)
+                {
+                    <option selected="@Model.TypeID == c.TypeID ? 'selected':''" value="@c.TypeID">@c.TypeName</option>
+                }
+            </select>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="txtPrice" class="col-sm-2 control-label">Giá</label>
+        <div class="col-sm-4">
+            <input type="text" class="form-control" id="txtPrice" name="Price" value="@Model.Price" />
+        </div>
+        <label for="txtQ" class="col-sm-2 control-label">Số lượng</label>
+        <div class="col-sm-4">
+            <input type="text" class="form-control" id="txtQ" name="Quantity" value="@Model.Quantity" />
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label">Hình lớn</label>
+        <div class="col-sm-4">
+            <input type="file" class="form-control" id="fuMain" name="fuMain" data-filename-placement="inside" />
+        </div>
+        <label class="col-sm-2 control-label">Hình nhỏ</label>
+        <div class="col-sm-4">
+            <input type="file" class="form-control" id="fuThumbs" name="fuThumbs" data-filename-placement="inside" />
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="txtTinyDes" class="col-sm-2 control-label">Mô tả</label>
+        <div class="col-sm-10">
+            <input type="text" class="form-control" id="txtTinyDes" name="TinyDes" value="@Model.TinyDes" />
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-10 col-sm-offset-2">
+            <textarea class="form-control" id="txtFullDes" name="FullDes">@Html.Raw(HttpUtility.HtmlDecode(Model.FullDes))</textarea>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-10 col-sm-offset-2">
+            <button type="submit" class="btn btn-danger">
+                <i class="fa fa-check"></i>&nbsp;Lưu
+            </button>
+            <a href="@Url.Action("getAll","ProductAdmin")" class="btn btn-success">
+                <i class="fa fa-reply"></i>&nbsp;Quản lí sản phẩm
+            </a>
+        </div>
+    </div>
+</form>

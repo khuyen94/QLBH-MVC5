@@ -1,0 +1,240 @@
+﻿@using QLBH_MVC.Models;
+@using BotDetect.Web.UI.Mvc;
+
+@model RegisterModel
+
+
+@section title {
+    Đăng ký tài khoản
+}
+
+@section css {
+<link href="@BotDetect.Web.CaptchaUrls.Absolute.LayoutStyleSheetUrl" rel="stylesheet" type="text/css" />
+<link href="~/Resources/bootstrap-datepicker/css/bootstrap-datepicker3.min.css" rel="stylesheet" />
+}
+
+@section js {
+<script src="~/Resources/jquery-validation/jquery.validate.min.js"></script>
+<script src="~/Resources/jquery-validation/additional-methods.min.js"></script>
+<script src="~/Resources/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
+    <script type="text/javascript">
+        $('.datepicker').datepicker({
+            autoclose: true,
+            format: 'd/m/yyyy',
+
+        });
+
+        $(document).ready(function () {
+            $("#registerForm").validate();
+        });
+
+        $.validator.addMethod("vndate", function (value, element) {
+            var ret = /^(?:(?:31(\/|-|\.)(?:0?[13578]|1[02]))\1|(?:(?:29|30)(\/|-|\.)(?:0?[1,3-9]|1[0-2])\2))(?:(?:1[6-9]|[2-9]\d)?\d{2})$|^(?:29(\/|-|\.)0?2\3(?:(?:(?:1[6-9]|[2-9]\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00))))$|^(?:0?[1-9]|1\d|2[0-8])(\/|-|\.)(?:(?:0?[1-9])|(?:1[0-2]))\4(?:(?:1[6-9]|[2-9]\d)?\d{2})$/.test(value);
+            return this.optional(element) || ret;
+        });
+      
+        $('#registerForm').validate({
+            rules: {
+                UID: {
+                    required: true
+                },
+                PWD: {
+                    required: true,
+                    minlength: 6,
+                },
+                ConfirmPWD: {
+                    required: true,
+                    equalTo: $("[Name='PWD']")
+                },
+                Email: {
+                    required: true,
+                    email: true
+                },
+                FullName: {
+                    required: true
+                },
+                DOB: {
+                    required: true,
+                    vndate: true
+                },
+                agree: {
+                    required: true
+                },
+            },
+            messages: {
+                UID: {
+                    required: 'Chưa nhập tên đăng nhập.'
+                },
+                PWD: {
+                    required: 'Chưa nhập mật khẩu.',
+                    minlength: 'Mật khẩu phải dài hơn 6 kí tự.'
+                },
+                ConfirmPWD: {
+                    required: 'Chưa nhập mật khẩu xác nhận.',
+                    equalTo: 'Mật khẩu xác nhận không đúng.'
+                },
+                Email: {
+                    required: 'Chưa nhập email.',
+                    email: 'Email không đúng định dạng.'
+                },
+                FullName: {
+                    required: 'Chưa nhập tên hiển thị.'
+                },
+                DOB: {
+                    required: 'Chưa nhập ngày sinh.',
+                    vndate: 'Ngày sinh không đúng định dạng.'
+                },
+                agree: {
+                    required: 'Bạn phải đồng ý với điều khoản.'
+                },
+            },
+            errorElement: 'div', //default input error message container
+            errorClass: 'help-block', //default input error message class
+
+            highlight: function (element) { // highlight error input
+                $(element)
+                .closest('.page-content').addClass('has-error');
+            },
+        });
+      
+    </script>
+}
+<form action="" method="post" id="registerForm">
+    <div class="row">
+
+        <div class="col-lg-12 col-md-12 col-sm-12 register-account">
+
+            <div class="page-content">
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                        <p><strong>Thông tin khách hàng</strong></p>
+                    </div>
+
+                    <div class="col-lg-4 col-md-4 col-sm-4">
+                        <p>E-Mail*</p>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-4">
+                        <input type="text" name="Email" placeholder="abc@example.com" value="@(Model!=null ? Model.Email : "")">
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-4">
+
+                    </div>
+
+                </div>
+
+                <div class="row">
+
+                    <div class="col-lg-4 col-md-4 col-sm-4">
+                        <p>Username*</p>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-4">
+                        <input type="text" id="username" name="UID" value="@(Model!=null ? Model.UID : "")">
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-4 help-block">
+                       <span style="color: red"> @ViewBag.Error</span>
+                    </div>
+                </div>
+
+                <div class="row">
+
+                    <div class="col-lg-4 col-md-4 col-sm-4">
+                        <p>FullName*</p>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-4">
+                        <input type="text" name="FullName" value="@(Model!=null ? Model.FullName : "")">
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-4">
+                    </div>
+                </div>
+
+                <div class="row">
+
+                    <div class="col-lg-4 col-md-4 col-sm-4">
+                        <p>Password</p>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-4">
+                        <input id="password" type="password" name="PWD">
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-4">
+                        <div class="password-meter">
+                            <div class="password-meter-message"> </div>
+                            <div class="password-meter-bg">
+                                <div class="password-meter-bar"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+
+                    <div class="col-lg-4 col-md-4 col-sm-4">
+                        <p>Password confirm</p>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-4">
+                        <input type="password" name="ConfirmPWD">
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-4">
+                    </div>
+                </div>
+
+                <div class="row">
+
+                    <div class="col-lg-4 col-md-4 col-sm-4">
+                        <p>Ngày sinh</p>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-4">
+                        <input class="datepicker" type="text" name="DOB" value="@(Model!=null ? Model.DOB : "")">
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-4">
+                    </div>
+                </div>
+                <div class="row">
+
+                    <div class="col-lg-4 col-md-4 col-sm-4">
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-4">
+                        @{ 
+                            MvcCaptcha sampleCaptcha = new MvcCaptcha("SampleCaptcha");
+                            sampleCaptcha.UserInputClientID = "CaptchaCode";
+                            }
+                        @Html.Captcha(sampleCaptcha)
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-4">
+                    </div>
+                </div>
+                <div class="row">
+
+                    <div class="col-lg-4 col-md-4 col-sm-4">
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-4">
+                        <input type="text" name="CaptchaCode" id="CaptchaCode" />
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-4">
+                       
+                    </div>
+                </div>
+
+                <div class="row">
+
+                    <div class="col-lg-4 col-md-4 col-sm-4">
+                        <p>Tôi đồng ý với <a href="#" class="blue">Điều khoản dịch vụ</a></p>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-4">
+                        <input type="checkbox" name="agree" id="i-agree-to-terms"><label for="i-agree-to-terms"></label>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-4">
+                    </div>
+                </div>
+
+                <div class="row">
+
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                        <input class="btn btn-primary center" type="submit" value="Register">
+                        <input class="btn btn-default" type="reset" value="Cancel">
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

@@ -1,0 +1,217 @@
+﻿@using QLBH.Helpers
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head >
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Ku Ky Hi-tech Shop</title>
+    <link rel="shortcut icon" href="~/Imgs/favicon.ico" type="image/x-icon" />
+    <link rel="icon" href="~/Imgs/favicon.ico" type="image/ico" />
+
+    <link href="~/styles/bootstrap-3.3.4-dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" media="screen" href="~/styles/css/bootraps/bootstrap.css" />
+    <link rel="stylesheet" media="screen" href="~/styles/css/bootraps/bootstrap-responsive.css" />
+    <link rel="stylesheet" media="screen" href="~/styles/css/main.css" />
+    <link rel="stylesheet" media="screen" href="~/styles/css/style.css" />
+    <link href="~/styles/font-awesome-4.3.0/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="~/Resources/sweetalert-master/lib/sweet-alert.css" rel="stylesheet" />
+
+    @RenderSection("css", required: false)
+</head>
+<body>
+        <div class="header">
+            <div class="topheader">
+                <div class="topheader-inner w1020px marginauto">
+                    <ul class="pull-right">
+                        <li class="topnav-active">
+                            <a href="#">About Us</a>
+                        </li>
+
+                        <li><a href="#">Điều khoản</a></li>
+
+                        <li><a href="#">FAQs</a></li>
+
+                        <li><a href="contact.aspx">Liên hệ</a></li>
+
+                        <li><a class="4rum" href="#">Diễn đàn</a></li>
+                    </ul>
+
+                </div>
+            </div>
+            <div class="branch">
+                <div class="w1020px marginauto">
+                    <div class="pull-left">
+                        <img src="~/images/icon-logo/logo-260x90.png" />
+                    </div>
+                    <div class="pull-right">
+                        <img src="~/images/icon-logo/banner-top.png" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="navbar">
+                <div class="navbar-inner">
+                    <div class="w1020px marginauto">
+                        <ul class="nav ">
+                            <li>
+                                <a href="@Url.Action("Index","Home")">Trang chủ</a>
+                            </li>
+                            <li class="divider-vertical"></li>
+                            <li><a href="">Sản phẩm</a></li>
+
+                            <li><a href="">Liên hệ </a></li>
+                            <li>
+                                <form class="navbar-form navbar-left" role="search" action="@Url.Action("findPro", "home")" method="post">
+                                    <div class="form-group">
+                                        <input type="text" name="keyword" class="form-control" placeholder="Tìm kiếm...">
+                                    </div>
+                                    <select class="chosen-select-search" name="findby">
+                                        <option value="0">Tất cả</option>
+                                        <option value="1">Danh mục</option>
+                                        <option value="2">Loại</option>
+                                        <option value="3">Xuất xứ</option>
+                                        <option value="4">Dưới 10 triệu</option>
+                                        <option value="5">Từ 10 - 20 triệu</option>
+                                        <option value="6">Từ 20 - 30 triệu</option>
+                                        <option value="7">Trên 30 triệu</option>
+                                    </select>
+                                    <button type="submit" class="btn btn-default">Tìm</button>
+                                </form>
+                            </li>
+                        </ul>
+                            
+                        <ul class="nav navbar-nav navbar-right">
+                            @if (CurrentContext.IsLogged() == false) { 
+                            <li><a href="@Url.Action("Login","Account")">Đăng nhập</a></li>
+                            <li> <a href="@Url.Action("Register","Account")">Đăng ký </a></li>
+                            }
+                            else { 
+                                <li><a class="btn-warning" href="@Url.Action("Index","Cart")"><i class="fa fa-shopping-cart"></i>&nbsp;<span id="cart-status" class="badge">@CurrentContext.GetCart().GetNumberOfItem()</span></a></li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                                @CurrentContext.GetCurUser().f_Name <span class="caret"></span></a>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li><a href="@Url.Action("UsProfile","Account")">Thông tin cá nhân</a></li>
+                                    <li class="divider"></li>
+                                    <li><a id="logoutLink" href="#">Đăng xuất</a></li>
+                                </ul>
+                            </li>
+                            }
+                        </ul>
+                       
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <!--END-HEADRER-->
+        <!--MAINBODY-->
+        <div class="mainbody left-fl">
+            <div class="mainbody-content w1020px marginauto">
+                <div class="left-area w220px left-fl">
+                    <div class="block menu-list branch-mobile ">
+                        <h4 class="pd5x10">Danh mục</h4>
+                        <ul class="nav nav-list w190px bs-docs-sidenav ">
+                            @Html.Action("getAll", "Category")
+                        </ul>
+                    </div>
+
+                    <div class="block menu-list accessories">
+                        <h4 class="pd5x10">Phân loại laptop</h4>
+                        <ul class="nav nav-list w190px bs-docs-sidenav">
+                            @Html.Action("getAll", "TypeProduct")
+                        </ul>
+                    </div>
+                    
+                    <div class="block menu-list accessories">
+                        <h4 class="pd5x10">Thống kê</h4>
+                        <ul class="nav nav-list w190px bs-docs-sidenav">
+                            <li>Lượt truy cập: @HttpContext.Current.Application["count_visit"]</li>
+                            <li>Đang online: @Context.Session["online"] </li>
+                        </ul>
+                    </div>
+
+                    <div class="block bannerw220">
+                        <!--Chi lay anh trong banner, Tai phan minh hoa dang lay trong phan logo-->
+                        <ul class="clean">
+                            <li>
+                                <a href="#">
+                                    <img src="~/images/banner/banner1.png" />
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <img src="~/images/banner/banner2.png" />
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!--Vung ben phai-->
+                <!--Vung ben phai-->
+                <!--Vung ben phai-->
+                <!--Vung ben phai-->
+                <!--Vung ben phai-->
+                <div class="right-area w775px left-fl pd10" style="background-color: #d7d7d7">
+                    <div class="header2">
+                        <span class="title">
+                            <span>
+                                @RenderSection("title")
+                            </span>
+                        </span>
+                    </div>
+                    <div style="padding-left: 30px">
+                       @RenderBody()
+                    </div>
+
+                    <form id="logoutForm" method="post" action="@Url.Action("Logout","Account")"></form>
+                </div>
+                <!--Vung ben phai-->
+            </div>
+        </div>
+        <!--END-MAINBODY-->
+        <!--FOOTER-->
+        <div class="footer wp100">
+            <div class="footer-inner marginauto w1000px">
+                <div class="pull-left" style="color: blue">
+                    <p>Copyright @@ @DateTime.Now.Year <a href="@Url.Action("Index","Home")">Ku Ky</a> </p>
+                    <p>Email: khuyen94@gmail.com</p>
+                    <p>Điện thoại: 01639.758.xxx</p>
+                    <p>12CK3 - ĐH KHTN TP.HCM</p>
+                </div>
+
+            </div>
+            <!--END-FOOTER-->
+            </div>
+    <script src="~/styles/jquery-1.11.2.js"></script>
+    <script src="~/styles/js/bootraps/bootstrap.min.js"></script>
+    <script src="~/Resources/sweetalert-master/lib/sweet-alert.min.js"></script>
+
+    <script type="text/javascript">
+        $('#logoutLink').click(function () {
+            $('#logoutForm').submit();
+        });
+
+        $('a[data-proid]').click(function () {
+            var id = $(this).attr("data-proid");
+            $.ajax({
+                type: 'POST',
+                url: '/Cart/Add1ToCart/',
+                contentType: 'application/json; charset=utf-8',
+                data: '{id: ' + id + '}',
+                dataType: 'json',
+            })
+            .success(function (numberItem) {
+                $('#cart-status').text(numberItem);
+                    swal({ title: "Đã thêm vào giỏ", timer: 2000, showConfirmButton: false });
+            })
+            .error(function (xhr, status) {
+                alert(status);
+            })
+        });
+    </script>
+@RenderSection("js", required: false)
+</body>
+</html>

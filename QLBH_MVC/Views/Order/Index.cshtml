@@ -1,0 +1,97 @@
+﻿@using QLBH_MVC.Models
+@model List<Order>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+@section title{
+    Quản lí đơn hàng
+}
+
+@section css{
+    <link href="~/Resources/sweetalert-master/lib/sweet-alert.css" rel="stylesheet" />
+}
+
+@section js{
+    <script src="~/Resources/sweetalert-master/lib/sweet-alert.min.js"></script>
+
+    <script>
+
+        $('a[data-del-orderid]').click(function () {
+            var id = $(this).attr("data-del-orderid");
+            $.ajax({
+                type: 'POST',
+                url: '/Order/delOrder',
+                contentType: 'application/json; charset=utf-8',
+                data: '{id: ' + id + '}',
+                dataType: 'json',
+                success: function (status) {
+                    if (status == true) {
+                        swal("Thông báo!", "Đã xóa thành công!", "success");
+                    }
+                    else {
+                        swal("Lỗi!", "Không xóa được!", "error");
+                    }
+                    location.reload();
+                },
+                error: function (xhr, status) {
+                    alert(status);
+                }
+            })
+        });
+    </script>
+}
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Người mua hàng</th>
+            <th>Ngày đặt hàng</th>
+            <th>Tổng tiền</th>
+            <th>Trạng thái</th>
+            <th>Thông tin</th>
+            <th>&nbsp;</th>
+            <th>&nbsp;</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Order o in Model)
+        {
+            <tr>
+                <td>@o.OrderID</td>
+                <td><a href="@Url.Action("Info", "User", new { id = o.User.f_ID })">@o.User.f_Name</a></td>
+                <td>@o.OrderDate</td>
+                <td>@string.Format("{0:N0}", o.Total)</td>
+                <td>
+                    @if (o.Status > 0)
+                    {
+                        <a href="@Url.Action("updateOrder", "Order", new { id = o.OrderID, sttOrder = 0 })" class="label label-success">Đã giao</a>
+                    }
+                    else
+                    {
+                        <a href="@Url.Action("updateOrder", "Order", new { id = o.OrderID, sttOrder = 1 })" class="label label-danger">Chưa giao</a>
+                    }
+                </td>
+                <td>
+                    <a href="@Url.Action("Index", "OrderDetail", new { id = o.OrderID })">Xem chi tiết</a>
+                </td>
+                <td>
+                    <a class="btn btn-default btn-xs" data-del-orderid="@o.OrderID">
+                        <i class="fa fa-remove"></i>
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+    <tfoot>
+        <tr>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td><h4>Total:</h4></td>
+            <td class="text-danger" colspan="2"><h4>@ViewBag.Total đơn hàng.</h4></td>
+        </tr>
+    </tfoot>
+</table>
+<div id="getOrder"></div>

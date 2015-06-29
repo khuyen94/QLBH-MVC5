@@ -1,0 +1,35 @@
+﻿@using QLBH_MVC.Models
+@model List<Product>
+
+<div class="group product clearfix">
+    <div class="header2">
+        <span class="title">
+            <span>
+                Cùng danh mục
+            </span>
+        </span>
+    </div>
+    <!-- Hiển thị sản phẩm mới -->
+    @if (Model.Count == 0)
+    {
+        <text>Không có sản phẩm nào</text>
+    }
+    else
+    {
+        <div class="row" style="padding-left: 17px">
+            @foreach (Product p in Model)
+            {
+            <!-- Product Item -->
+                <div class="col-lg-4 col-md-4 col-sm-4">
+                    <img src="~/Imgs/sp/@p.ProID/main_thumbs.jpg" alt="@p.ProName" title="@p.ProName">
+                    <a href="@Url.Action("detail", "product", new {id = p.ProID })">
+                    </a>
+                    <h5><a href="@Url.Action("Detail", "Product", new { id = p.ProID })">@p.ProName</a></h5>
+                    <span class="price">$@string.Format("{0:N0}", p.Price)</span><br /><br />
+                </div>
+
+                        <!-- Product Item -->
+            }
+        </div>
+    }
+</div>
